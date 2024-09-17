@@ -1,0 +1,16 @@
+{
+  "name": "oop",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "(npx parcel ./index.html) & npx parcel watch ./index.html",
+    "dev" : "nodemon"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "parcel": "^2.12.0"
+  }
+}
