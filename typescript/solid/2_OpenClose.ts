@@ -1,53 +1,49 @@
-// Correct: Using polymorphism to extend functionality
-interface Shape {
+// RIGHT USAGE of OCP
+interface Area {
   area(): number;
 }
-
-class Rectangle1 implements Shape {
-  constructor(private width: number, private height: number) {}
-
-  public area(): number {
-    return this.width * this.height;
+class Rectangle implements Area {
+  constructor(private height: number, private width: number) {}
+  area(): number {
+    return this.height * this.width;
   }
 }
-
-class Circle1 implements Shape {
+class Circle implements Area {
   constructor(private radius: number) {}
-
-  public area(): number {
-    return Math.PI * this.radius * this.radius;
+  area(): number {
+    return Math.PI * Math.pow(this.radius, 2);
   }
 }
 
-class AreaCalculator1 {
-  public static calculateArea(shape: Shape): number {
-    return shape.area();
+// this is closed for modification
+function calulateArea(shape: Area): number {
+  return shape.area();
+}
+console.log(calulateArea(new Rectangle(2, 3)));
+console.log(calulateArea(new Circle(2)));
+
+// WRONG USAGE of OCP
+
+class WrongRectangle {
+  constructor(private height: number, private width: number) {}
+  area(): number {
+    return this.height * this.width;
   }
 }
-
-// Wrong: Modifying existing code to add new functionality
-class Rectangle2 {
-  constructor(private width: number, private height: number) {}
-
-  public area(): number {
-    return this.width * this.height;
-  }
-}
-
-class Circle2 {
+class WrongCircle {
   constructor(private radius: number) {}
-
-  public area(): number {
-    return Math.PI * this.radius * this.radius;
+  area(): number {
+    return Math.PI * Math.pow(this.radius, 2);
   }
 }
 
-class AreaCalculator2 {
-  public static calculateRectangleArea(rectangle: Rectangle2): number {
-    return rectangle.area();
-  }
-
-  public static calculateCircleArea(circle: Circle2): number {
-    return circle.area();
-  }
+// this has to be modified in case of new class
+function calulateCircleArea(circle: WrongCircle) {
+  return circle.area();
 }
+function calulateRectangleArea(rectangle: WrongRectangle) {
+  return rectangle.area();
+}
+
+console.log(calulateRectangleArea(new WrongRectangle(4, 5)));
+console.log(calulateCircleArea(new WrongCircle(3)));

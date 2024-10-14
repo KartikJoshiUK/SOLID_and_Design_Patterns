@@ -1,33 +1,43 @@
-// Correct: High-level module depends on an abstraction
-interface NotificationService {
-  sendNotification(message: string): void;
+// Abstraction to prevent coupling
+interface IDatabase {
+  execute(): void; // Abstraction for executing commands
 }
 
-class EmailService implements NotificationService {
-  public sendNotification(message: string): void {
-    console.log(`Sending email: ${message}`);
+// Lower-level implementations
+class MySQLDB implements IDatabase {
+  execute(): void {
+    console.log("Saving in MySQL");
   }
 }
 
-class User {
-  constructor(private notificationService: NotificationService) {}
-
-  public notify(message: string): void {
-    this.notificationService.sendNotification(message);
+class MongoDB implements IDatabase {
+  execute(): void {
+    console.log("Saving in MongoDB");
+  }
+  find(): void {
+    console.log("Found!");
   }
 }
 
-// Wrong: High-level module depends on a low-level module
-class EmailService2 {
-  public sendEmail(message: string): void {
-    console.log(`Sending email: ${message}`);
+// Higher-level module using abstraction
+class Prisma {
+  save(database: IDatabase) {
+    database.execute(); // Depends on abstraction, not concrete implementation
   }
 }
 
-class User2 {
-  constructor(private emailService: EmailService2) {}
-
-  public notify(message: string): void {
-    this.emailService.sendEmail(message);
+// Violation of DIP
+class Mongoose {
+  save(database: MongoDB) {
+    database.execute(); // Tightly coupled to MongoDB
   }
 }
+
+// CLIENT
+const prismaClient = new Prisma();
+prismaClient.save(new MongoDB());
+prismaClient.save(new MySQLDB()); // Flexibility to use any IDatabase implementation
+
+const mongooseClient = new Mongoose();
+mongooseClient.save(new MongoDB());
+// mongooseClient.save(new MySQLDB()); // This would cause an error due to coupling

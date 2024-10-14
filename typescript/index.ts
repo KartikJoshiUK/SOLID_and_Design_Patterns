@@ -1,1 +1,5 @@
-console.log("Hello world");
+class Super {
+  private constructor() {
+    console.log("HELLO");
+  }
+}
