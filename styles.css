@@ -1,0 +1,33 @@
+body {
+  background: #000;
+  color: white;
+}
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: monospace;
+}
+input {
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  font-family: monospace;
+}
+button {
+  background-color: rgb(24, 24, 132);
+  border: none;
+  color: white;
+  border: 1px solid white;
+  padding: 0.5rem 1rem;
+  font-family: monospace;
+  cursor: pointer;
+  &:disabled {
+    cursor: auto;
+    background-color: gray;
+  }
+}
+div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
